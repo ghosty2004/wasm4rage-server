@@ -2,6 +2,7 @@
 name = "wasm-for-rage"
 version = "0.1.0"
 edition = "2021"
+authors = ["ghosty2004"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
