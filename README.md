@@ -12,6 +12,10 @@ The project is under construction, so feel free to contribuite.
 ```js
 const wasm = require("./wasm_for_rage.js");
 mp.events.add('packagesLoaded', () => {
+  // create some vehicles to test rust's forEach :)
+  for(let i = 0; i < 10; i++) mp.vehicles.new("infernus2", new mp.Vector3(0, 0, 0));
+
+  // initialize the main of rust lib
   console.log(wasm.main()); // you can view the return value of `wasm.main()` from `/src/lib.rs` (it return a String)
 });
 ```
