@@ -12,7 +12,7 @@ The project is under construction, so feel free to contribuite.
 ```js
 const wasm = require("./wasm_for_rage.js");
 mp.events.add('packagesLoaded', () => {
-  console.log(wasm.main());
+  console.log(wasm.main()); // you can view the return value of `wasm.main()` from `/src/lib.rs` (it return a String)
 });
 ```
 6. build the rust library with the following command `wasm-pack build --target nodejs --release`
