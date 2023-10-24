@@ -22,4 +22,4 @@ mp.events.add('packagesLoaded', () => {
 #### Todo
 - bind all methods from ragemp (embedded nodejs) to rust
 
-##### You are probable asking why I started this proiect, so the first reason is that I'm currently learning rust, so this is my first project. The second one is that you can write your ragemp gamemode in rust or only a part of your gamemode.
+##### You are probable asking why I started this proiect, so the first reason is that I'm currently learning rust. The second one is that you can write your ragemp gamemode in rust or only a part of your gamemode.
