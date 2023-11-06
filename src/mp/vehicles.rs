@@ -4,8 +4,11 @@ use wasm_bindgen::{
     JsObject, JsValue,
 };
 
+use super::Vector3;
+
 #[wasm_bindgen]
 extern "C" {
+    #[derive(Debug)]
     pub type VehicleMp;
 
     #[wasm_bindgen(method, getter)]
@@ -268,14 +271,52 @@ extern "C" {
     pub fn new(model: String, position: crate::Vector3) -> Option<VehicleMp>;
     pub fn at(index: i32) -> VehicleMp;
     pub fn exists(vehicle: VehicleMp) -> bool;
-    pub fn forEach(callback: &Closure<dyn FnMut(&VehicleMp)>);
-    pub fn forEachInRange(
+
+    fn forEach(callback: &Closure<dyn Fn(&VehicleMp)>);
+    fn forEachInRange(
         position: JsValue,
-        range: f32,
+        range: f64,
         dimension: i32,
-        callback: &Closure<dyn FnMut(&VehicleMp)>,
+        callback: &Closure<dyn Fn(&VehicleMp)>,
     );
-    pub fn forEachInDimension(dimension: i32, callback: &Closure<dyn FnMut(&VehicleMp)>);
-    pub fn getClosest(position: JsValue, limit: i32) -> VehicleMp;
-    pub fn toArray() -> Array;
+    fn forEachInDimension(dimension: i32, callback: &Closure<dyn Fn(&VehicleMp)>);
+
+    #[wasm_bindgen(js_name = "getClosest")]
+    pub fn get_closest(position: Vector3) -> Option<VehicleMp>;
+
+    #[wasm_bindgen(js_name = "toArray")]
+    pub fn to_array() -> Array;
+}
+
+pub fn for_each<F>(mut callback: F)
+where
+    F: Fn(&VehicleMp) + 'static,
+{
+    let closure = Closure::wrap(
+        Box::new(move |vehicle: &VehicleMp| callback(vehicle)) as Box<dyn Fn(&VehicleMp)>
+    );
+    forEach(&closure);
+    closure.forget();
+}
+
+pub fn for_each_in_range<F>(position: JsValue, range: f64, dimension: i32, mut callback: F)
+where
+    F: Fn(&VehicleMp) + 'static,
+{
+    let closure = Closure::wrap(
+        Box::new(move |vehicle: &VehicleMp| callback(vehicle)) as Box<dyn Fn(&VehicleMp)>
+    );
+    forEachInRange(position, range, dimension, &closure);
+    closure.forget();
+}
+
+pub fn for_each_in_dimension<F>(dimension: i32, mut callback: F)
+where
+    F: Fn(&VehicleMp) + 'static,
+{
+    let closure = Closure::wrap(
+        Box::new(move |vehicle: &VehicleMp| callback(vehicle)) as Box<dyn Fn(&VehicleMp)>
+    );
+    forEachInDimension(dimension, &closure);
+    closure.forget();
 }
