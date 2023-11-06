@@ -18,11 +18,14 @@ pub fn main() -> String {
         console_log(String::from("Failed to create vehicle"));
     }
 
-    mp::vehicles::forEach(&Closure::wrap(
-        Box::new(|vehicle: &mp::vehicles::VehicleMp| {
-            vehicle.set_numberPlate(String::from("RUST"));
-            console_log(format!("Vehicle numberPlate {}", vehicle.numberPlate()));
-        }) as Box<dyn FnMut(&mp::vehicles::VehicleMp)>,
+    mp::vehicles::for_each(|vehicle| {
+        console_log(format!("Vehicle position x: {:?}", vehicle.position().x()));
+    });
+
+    // get closest vehicle
+    console_log(format!(
+        "Closest to position 0,0,0: {:?}",
+        mp::vehicles::get_closest(Vector3::new(0.0, 0.0, 0.0)),
     ));
 
     String::from("initialized")
