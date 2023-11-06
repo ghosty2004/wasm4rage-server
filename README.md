@@ -49,12 +49,10 @@ pub fn main() -> String {
         console_log(String::from("Failed to create vehicle"));
     }
 
-    mp::vehicles::forEach(&Closure::wrap(
-        Box::new(|vehicle: &mp::vehicles::VehicleMp| {
-            vehicle.set_numberPlate(String::from("RUST"));
-            console_log(format!("Vehicle numberPlate {}", vehicle.numberPlate()));
-        }) as Box<dyn FnMut(&mp::vehicles::VehicleMp)>,
-    ));
+    mp::vehicles::for_each(|vehicle| {
+        vehicle.set_numberPlate(String::from("RUST"));
+        console_log(format!("Vehicle numberPlate {}", vehicle.numberPlate()));
+    });
 
     String::from("initialized") // this will be returned to node runtime (in our case the node from ragemp where it's embedded)
 }
